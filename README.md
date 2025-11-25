@@ -1,16 +1,16 @@
-# react-prize-wheel
+# react-spinner-prize-wheel
 
 🎡 Modern, fully customizable prize wheel spinner component for React with TypeScript support.
 
-[![npm version](https://img.shields.io/npm/v/react-prize-wheel.svg)](https://www.npmjs.com/package/react-prize-wheel)
-[![npm downloads](https://img.shields.io/npm/dm/react-prize-wheel.svg)](https://www.npmjs.com/package/react-prize-wheel)
-[![license](https://img.shields.io/npm/l/react-prize-wheel.svg)](https://github.com/joshuaolusayo/react-prize-wheel/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/react-spinner-prize-wheel.svg)](https://www.npmjs.com/package/react-spinner-prize-wheel)
+[![npm downloads](https://img.shields.io/npm/dm/react-spinner-prize-wheel.svg)](https://www.npmjs.com/package/react-spinner-prize-wheel)
+[![license](https://img.shields.io/npm/l/react-spinner-prize-wheel.svg)](https://github.com/joshuaolusayo/react-spinner-prize-wheel/blob/main/LICENSE)
 
 ## 🎮 Live Demo
 
-- **GitHub Pages**: [https://joshuaolusayo.github.io/react-prize-wheel/](https://joshuaolusayo.github.io/react-prize-wheel/)
-- **CodeSandbox**: [Try it online](https://codesandbox.io/s/react-prize-wheel)
-- **StackBlitz**: [Edit in browser](https://stackblitz.com/edit/react-prize-wheel)
+- **GitHub Pages**: [https://joshuaolusayo.github.io/react-spinner-prize-wheel/](https://joshuaolusayo.github.io/react-spinner-prize-wheel/)
+- **CodeSandbox**: [Try it online](https://codesandbox.io/s/react-spinner-prize-wheel)
+- **StackBlitz**: [Edit in browser](https://stackblitz.com/edit/react-spinner-prize-wheel)
 
 ## Features
 
@@ -24,17 +24,17 @@
 ## Installation
 
 ```bash
-npm install react-prize-wheel
+npm install react-spinner-prize-wheel
 # or
-yarn add react-prize-wheel
+yarn add react-spinner-prize-wheel
 # or
-pnpm add react-prize-wheel
+pnpm add react-spinner-prize-wheel
 ```
 
 ## Usage
 
 ```tsx
-import { SpinnerWheel } from 'react-prize-wheel';
+import { SpinnerWheel } from 'react-spinner-prize-wheel';
 
 const items = [
   { id: 1, label: 'Prize 1', color: '#FF6B6B' },
