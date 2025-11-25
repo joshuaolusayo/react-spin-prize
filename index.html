@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>react-spinner-prize-wheel - Live Demo</title>
-    <script crossorigin src="https://unpkg.com/react@19/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@19/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script>
+        // Debug: Check if React loaded
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('React loaded:', typeof React !== 'undefined');
+            console.log('ReactDOM loaded:', typeof ReactDOM !== 'undefined');
+        });
+    </script>
     <style>
         * {
             margin: 0;
@@ -421,7 +428,14 @@ function App() {
             );
         }
 
-        ReactDOM.render(<Demo />, document.getElementById('root'));
+        // Use React 18 createRoot API if available, fallback to render
+        const rootElement = document.getElementById('root');
+        if (ReactDOM.createRoot) {
+            const root = ReactDOM.createRoot(rootElement);
+            root.render(<Demo />);
+        } else {
+            ReactDOM.render(<Demo />, rootElement);
+        }
     </script>
 </body>
 </html>
