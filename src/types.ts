@@ -23,4 +23,5 @@ export interface SpinnerWheelProps {
   buttonBorderWidth?: number;
   disabled?: boolean;
   winningIndex?: number;
+  autoSpinTrigger?: string | number | boolean | null;
 }

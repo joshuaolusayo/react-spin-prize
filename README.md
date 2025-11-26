@@ -76,6 +76,7 @@ function App() {
 | `buttonTextColor` | `string` | '#fff' | Text color of the button |
 | `disabled` | `boolean` | false | Disable the spin button |
 | `winningIndex` | `number` | - | Force a specific winner (for testing) |
+| `autoSpinTrigger` | `string \| number \| boolean \| null` | - | Change this value to trigger a programmatic spin |
 
 ## SpinnerWheelItem
 

@@ -23,7 +23,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0d254f;
             min-height: 100vh;
             padding: 20px;
         }
@@ -117,6 +117,146 @@
             color: #0369a1;
         }
 
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .controls {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 12px;
+            position: sticky;
+            top: 20px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #334155;
+            font-size: 14px;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            accent-color: #0d254f;
+        }
+
+        .control-group input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .control-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .control-group input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .value-display {
+            display: inline-block;
+            margin-left: 10px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 20px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .items-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .item-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .item-row input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .item-row input[type="color"] {
+            width: 60px;
+            height: 36px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn {
+            background: #0d254f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #1a3a6e;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        @media (max-width: 1024px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                position: static;
+            }
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 32px;
@@ -130,14 +270,14 @@
             <h1>🎡 react-spinner-prize-wheel</h1>
             <p class="subtitle">Modern, customizable prize wheel spinner for React</p>
             <div class="links">
-                <a href="https://github.com/joshuaolusayo/react-prize-wheel" target="_blank">GitHub</a>
+                <a href="https://github.com/joshuaolusayo/react-spinner-prize-wheel" target="_blank">GitHub</a>
                 <a href="https://www.npmjs.com/package/react-spinner-prize-wheel" target="_blank">NPM</a>
                 <a href="#installation">Installation</a>
             </div>
         </header>
 
         <div class="demo-section">
-            <h2 style="margin-bottom: 20px; color: #334155; text-align: center;">🎮 Live Interactive Demo</h2>
+            <h2 style="margin-bottom: 30px; color: #334155; text-align: center;">🎮 Live Interactive Demo</h2>
             <div id="root"></div>
         </div>
 
@@ -309,7 +449,6 @@ function App() {
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
                     <div style={{ position: 'relative', width: size, height: size }}>
                         <svg width={size} height={size} style={{ transform: `rotate(${rotation}deg)`, transition: 'none' }}>
-                            <circle cx={radius} cy={radius} r={radius} fill="none" stroke={borderColor} strokeWidth={borderWidth} />
                             {items.map((item, index) => {
                                 const textPos = getTextPosition(index);
                                 const color = item.color || `hsl(${(index * 360) / items.length}, 70%, 60%)`;
@@ -317,7 +456,7 @@ function App() {
 
                                 return (
                                     <g key={item.id}>
-                                        <path d={createSegmentPath(index)} fill={color} stroke="#fff" strokeWidth="2" />
+                                        <path d={createSegmentPath(index)} fill={color} stroke="#fff" strokeWidth="3" strokeLinejoin="round" />
                                         <text
                                             x={textPos.x}
                                             y={textPos.y}
@@ -333,6 +472,7 @@ function App() {
                                     </g>
                                 );
                             })}
+                            <circle cx={radius} cy={radius} r={radius - borderWidth / 2} fill="none" stroke={borderColor} strokeWidth={borderWidth} />
                         </svg>
 
                         <div style={{
@@ -388,7 +528,8 @@ function App() {
         function Demo() {
             const [winner, setWinner] = useState(null);
 
-            const items = [
+            // Wheel items state
+            const [items, setItems] = useState([
                 { id: 1, label: '🎁 Prize 1', color: '#FF6B6B' },
                 { id: 2, label: '🏆 Prize 2', color: '#4ECDC4' },
                 { id: 3, label: '💎 Prize 3', color: '#45B7D1' },
@@ -397,33 +538,223 @@ function App() {
                 { id: 6, label: '🔥 Prize 6', color: '#F7DC6F' },
                 { id: 7, label: '💰 Prize 7', color: '#BB8FCE' },
                 { id: 8, label: '🎪 Prize 8', color: '#85C1E2' },
-            ];
+            ]);
+
+            // Customization state
+            const [size, setSize] = useState(500);
+            const [duration, setDuration] = useState(5000);
+            const [fontSize, setFontSize] = useState(16);
+            const [borderWidth, setBorderWidth] = useState(8);
+            const [borderColor, setBorderColor] = useState('#f59e0b');
+            const [buttonText, setButtonText] = useState('SPIN');
+            const [buttonColor, setButtonColor] = useState('#f59e0b');
+            const [buttonTextColor, setButtonTextColor] = useState('#ffffff');
+            const [buttonBorderColor, setButtonBorderColor] = useState('#FFD700');
+            const [buttonBorderWidth, setButtonBorderWidth] = useState(6);
 
             const handleSpinComplete = (item) => {
                 setWinner(item);
             };
 
-            return (
-                <div style={{ textAlign: 'center' }}>
-                    <SpinnerWheel
-                        items={items}
-                        onSpinComplete={handleSpinComplete}
-                        size={500}
-                        duration={5000}
-                        borderColor="#f59e0b"
-                        borderWidth={8}
-                        buttonColor="#f59e0b"
-                        buttonTextColor="#fff"
-                        buttonBorderColor="#FFD700"
-                        buttonBorderWidth={6}
-                    />
+            const updateItem = (id, field, value) => {
+                setItems(items.map(item =>
+                    item.id === id ? { ...item, [field]: value } : item
+                ));
+            };
 
-                    {winner && (
-                        <div className="winner-display">
-                            <h3>🎉 Winner!</h3>
-                            <p>{winner.label}</p>
+            const addItem = () => {
+                const newId = Math.max(...items.map(i => i.id), 0) + 1;
+                const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2'];
+                setItems([...items, {
+                    id: newId,
+                    label: `Prize ${newId}`,
+                    color: colors[newId % colors.length]
+                }]);
+            };
+
+            const removeItem = (id) => {
+                if (items.length > 2) {
+                    setItems(items.filter(item => item.id !== id));
+                }
+            };
+
+            return (
+                <div className="demo-grid">
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <SpinnerWheel
+                            items={items}
+                            onSpinComplete={handleSpinComplete}
+                            size={size}
+                            duration={duration}
+                            fontSize={fontSize}
+                            borderColor={borderColor}
+                            borderWidth={borderWidth}
+                            buttonText={buttonText}
+                            buttonColor={buttonColor}
+                            buttonTextColor={buttonTextColor}
+                            buttonBorderColor={buttonBorderColor}
+                            buttonBorderWidth={buttonBorderWidth}
+                        />
+
+                        {winner && (
+                            <div className="winner-display">
+                                <h3>🎉 Winner!</h3>
+                                <p>{winner.label}</p>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="controls">
+                        <h3 style={{ margin: 0, marginBottom: 20, color: '#1e293b' }}>Customize Your Wheel</h3>
+
+                        <div className="section-title">Wheel Settings</div>
+
+                        <div className="control-group">
+                            <label>
+                                Size: <span className="value-display">{size}px</span>
+                            </label>
+                            <input
+                                type="range"
+                                min="300"
+                                max="700"
+                                value={size}
+                                onChange={(e) => setSize(Number(e.target.value))}
+                            />
                         </div>
-                    )}
+
+                        <div className="control-group">
+                            <label>
+                                Spin Duration: <span className="value-display">{duration}ms</span>
+                            </label>
+                            <input
+                                type="range"
+                                min="2000"
+                                max="10000"
+                                step="500"
+                                value={duration}
+                                onChange={(e) => setDuration(Number(e.target.value))}
+                            />
+                        </div>
+
+                        <div className="control-group">
+                            <label>
+                                Font Size: <span className="value-display">{fontSize}px</span>
+                            </label>
+                            <input
+                                type="range"
+                                min="10"
+                                max="24"
+                                value={fontSize}
+                                onChange={(e) => setFontSize(Number(e.target.value))}
+                            />
+                        </div>
+
+                        <div className="control-group">
+                            <label>
+                                Border Width: <span className="value-display">{borderWidth}px</span>
+                            </label>
+                            <input
+                                type="range"
+                                min="0"
+                                max="20"
+                                value={borderWidth}
+                                onChange={(e) => setBorderWidth(Number(e.target.value))}
+                            />
+                        </div>
+
+                        <div className="control-group">
+                            <label>Border Color</label>
+                            <input
+                                type="color"
+                                value={borderColor}
+                                onChange={(e) => setBorderColor(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="section-title">Button Settings</div>
+
+                        <div className="control-group">
+                            <label>Button Text</label>
+                            <input
+                                type="text"
+                                value={buttonText}
+                                onChange={(e) => setButtonText(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="control-group">
+                            <label>Button Color</label>
+                            <input
+                                type="color"
+                                value={buttonColor}
+                                onChange={(e) => setButtonColor(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="control-group">
+                            <label>Button Text Color</label>
+                            <input
+                                type="color"
+                                value={buttonTextColor}
+                                onChange={(e) => setButtonTextColor(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="control-group">
+                            <label>Button Border Color</label>
+                            <input
+                                type="color"
+                                value={buttonBorderColor}
+                                onChange={(e) => setButtonBorderColor(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="control-group">
+                            <label>
+                                Button Border Width: <span className="value-display">{buttonBorderWidth}px</span>
+                            </label>
+                            <input
+                                type="range"
+                                min="0"
+                                max="12"
+                                value={buttonBorderWidth}
+                                onChange={(e) => setButtonBorderWidth(Number(e.target.value))}
+                            />
+                        </div>
+
+                        <div className="section-title">
+                            Prize Items
+                            <button className="btn btn-small" style={{ float: 'right' }} onClick={addItem}>
+                                + Add Item
+                            </button>
+                        </div>
+
+                        <div className="items-list">
+                            {items.map((item, index) => (
+                                <div key={item.id} className="item-row">
+                                    <input
+                                        type="text"
+                                        value={item.label}
+                                        onChange={(e) => updateItem(item.id, 'label', e.target.value)}
+                                        placeholder="Prize label"
+                                    />
+                                    <input
+                                        type="color"
+                                        value={item.color}
+                                        onChange={(e) => updateItem(item.id, 'color', e.target.value)}
+                                    />
+                                    {items.length > 2 && (
+                                        <button
+                                            className="btn btn-small btn-danger"
+                                            onClick={() => removeItem(item.id)}
+                                        >
+                                            ×
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             );
         }

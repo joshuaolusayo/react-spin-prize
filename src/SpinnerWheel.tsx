@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import type { SpinnerWheelProps } from "./types";
 
 const DEFAULT_COLORS = [
@@ -25,6 +25,7 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
   buttonBorderWidth = 4,
   disabled = false,
   winningIndex,
+  autoSpinTrigger,
 }) => {
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
@@ -48,7 +49,7 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
     };
   }, []);
 
-  const spin = () => {
+  const spin = useCallback(() => {
     if (spinning || items.length === 0) return;
 
     setSpinning(true);
@@ -129,7 +130,30 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
     };
 
     animationRef.current = requestAnimationFrame(animate);
-  };
+  }, [spinning, items, winningIndex, segmentAngle, rotation, duration, onSpinComplete]);
+
+  const autoSpinTriggerRef = useRef<SpinnerWheelProps["autoSpinTrigger"]>(autoSpinTrigger);
+  const isFirstAutoSpin = useRef(true);
+
+  useEffect(() => {
+    if (autoSpinTrigger === undefined || autoSpinTrigger === null) {
+      autoSpinTriggerRef.current = autoSpinTrigger;
+      return;
+    }
+
+    if (isFirstAutoSpin.current) {
+      isFirstAutoSpin.current = false;
+      autoSpinTriggerRef.current = autoSpinTrigger;
+      return;
+    }
+
+    if (autoSpinTriggerRef.current === autoSpinTrigger) {
+      return;
+    }
+
+    autoSpinTriggerRef.current = autoSpinTrigger;
+    spin();
+  }, [autoSpinTrigger, spin]);
 
   const getColor = (index: number): string => {
     return items[index].color || DEFAULT_COLORS[index % DEFAULT_COLORS.length];
@@ -186,7 +210,7 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
 
       return (
         <g key={item.id}>
-          <path d={pathData} fill={getColor(index)} stroke={borderColor} strokeWidth={1} />
+          <path d={pathData} fill={getColor(index)} stroke="#fff" strokeWidth={3} strokeLinejoin="round" />
           <text
             x={textX}
             y={textY}
@@ -216,6 +240,7 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
           transition: isSpinning ? "none" : "transform 0.3s ease-out",
         }}
       >
+        {renderSegments()}
         <circle
           cx={centerX}
           cy={centerY}
@@ -224,7 +249,6 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
           stroke={borderColor}
           strokeWidth={borderWidth}
         />
-        {renderSegments()}
         {/* Center button background with border */}
         {buttonBorderWidth > 0 && (
           <circle
