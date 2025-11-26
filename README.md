@@ -65,6 +65,7 @@ function App() {
 |------|------|---------|-------------|
 | `items` | `SpinnerWheelItem[]` | required | Array of items to display on the wheel |
 | `onSpinComplete` | `(item: SpinnerWheelItem) => void` | - | Callback when spin completes |
+| `onButtonClick` | `() => void \| Promise<void>` | - | Callback when center button is clicked |
 | `spinning` | `boolean` | - | External control of spinning state |
 | `duration` | `number` | 5000 | Duration of spin animation in ms |
 | `size` | `number` | 500 | Size of the wheel in pixels |
@@ -111,6 +112,18 @@ interface SpinnerWheelItem {
   size={600}
   buttonSize={100}
   duration={8000}
+/>
+
+// With button click callback (e.g., for API calls before spinning)
+<SpinnerWheel
+  items={items}
+  onButtonClick={async () => {
+    // Make API call or perform any action when button is clicked
+    await fetchSpinData();
+  }}
+  onSpinComplete={(item) => {
+    console.log('Winner:', item);
+  }}
 />
 ```
 

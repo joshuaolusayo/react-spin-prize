@@ -8,6 +8,7 @@ export interface SpinnerWheelItem {
 export interface SpinnerWheelProps {
   items: SpinnerWheelItem[];
   onSpinComplete?: (item: SpinnerWheelItem) => void;
+  onButtonClick?: () => void | Promise<void>;
   spinning?: boolean;
   duration?: number;
   size?: number;

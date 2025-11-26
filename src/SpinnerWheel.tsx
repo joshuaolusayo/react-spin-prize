@@ -10,6 +10,7 @@ const DEFAULT_COLORS = [
 export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
   items,
   onSpinComplete,
+  onButtonClick,
   spinning: externalSpinning,
   duration = 5000,
   size = 500,
@@ -74,7 +75,7 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
     //   - Simplifies to: -(i * segmentAngle + segmentAngle/2)
     //   - = -(i + 0.5) * segmentAngle
 
-    const rotations = 5 + Math.floor(Math.random() * 4); // 5-8 full rotations
+    const rotations = 20 + Math.floor(Math.random() * 10); // 20-30 full rotations for much faster spinning
     const targetRotation = -(targetIdx + 0.5) * segmentAngle;
 
     const startRotation = rotation;
@@ -83,19 +84,6 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
     const deltaRotation = targetNormalized - currentNormalized;
     const totalRotation = 360 * rotations + deltaRotation;
     const endRotation = startRotation + totalRotation;
-
-    console.log('🎯 Spin Started:', {
-      targetIndex: targetIdx,
-      targetLabel: items[targetIdx].label,
-      segmentAngle,
-      targetRotation,
-      targetNormalized,
-      currentNormalized,
-      deltaRotation,
-      totalRotation,
-      startRotation,
-      endRotation
-    });
 
     startTimeRef.current = performance.now();
 
@@ -114,15 +102,6 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
       } else {
         setSpinning(false);
 
-        // Verify landing position
-        const finalRotation = ((currentRotation % 360) + 360) % 360;
-        console.log('🏁 Spin Complete:', {
-          targetIndex: targetIdx,
-          targetLabel: items[targetIdx].label,
-          finalRotation,
-          expectedRotation: ((targetRotation % 360) + 360) % 360
-        });
-
         if (onSpinComplete) {
           onSpinComplete(items[targetIdx]);
         }
@@ -132,17 +111,18 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
     animationRef.current = requestAnimationFrame(animate);
   }, [spinning, items, winningIndex, segmentAngle, rotation, duration, onSpinComplete]);
 
-  const autoSpinTriggerRef = useRef<SpinnerWheelProps["autoSpinTrigger"]>(autoSpinTrigger);
-  const isFirstAutoSpin = useRef(true);
+  const autoSpinTriggerRef = useRef<SpinnerWheelProps["autoSpinTrigger"]>();
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
-    if (autoSpinTrigger === undefined || autoSpinTrigger === null) {
+    if (autoSpinTrigger === undefined) {
       autoSpinTriggerRef.current = autoSpinTrigger;
       return;
     }
 
-    if (isFirstAutoSpin.current) {
-      isFirstAutoSpin.current = false;
+    // Skip initial mount - don't spin when component first renders
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
       autoSpinTriggerRef.current = autoSpinTrigger;
       return;
     }
@@ -153,7 +133,7 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
 
     autoSpinTriggerRef.current = autoSpinTrigger;
     spin();
-  }, [autoSpinTrigger, spin]);
+  }, [autoSpinTrigger]);
 
   const getColor = (index: number): string => {
     return items[index].color || DEFAULT_COLORS[index % DEFAULT_COLORS.length];
@@ -210,7 +190,7 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
 
       return (
         <g key={item.id}>
-          <path d={pathData} fill={getColor(index)} stroke="#fff" strokeWidth={3} strokeLinejoin="round" />
+          <path d={pathData} fill={getColor(index)} stroke={borderColor} strokeWidth={1} />
           <text
             x={textX}
             y={textY}
@@ -240,7 +220,6 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
           transition: isSpinning ? "none" : "transform 0.3s ease-out",
         }}
       >
-        {renderSegments()}
         <circle
           cx={centerX}
           cy={centerY}
@@ -249,6 +228,7 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
           stroke={borderColor}
           strokeWidth={borderWidth}
         />
+        {renderSegments()}
         {/* Center button background with border */}
         {buttonBorderWidth > 0 && (
           <circle
@@ -280,7 +260,13 @@ export const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
 
       {/* Center button */}
       <button
-        onClick={spin}
+        onClick={() => {
+          if (onButtonClick) {
+            onButtonClick();
+          } else {
+            spin();
+          }
+        }}
         disabled={disabled || isSpinning}
         style={{
           position: "absolute",
